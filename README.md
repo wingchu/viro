@@ -1,73 +1,160 @@
-# Viro React
+<p align="center">
+  <a href="https://virocommunity.github.io/">
+    <img src="viro-logo.png" alt="ViroReact logo">
+  </a>
 
-[Chat](https://discord.gg/YfxDBGTxvG)
+  <h2 align="center">ViroReact</h2>
 
-Viro React is a platform for developers to rapidly build augmented reality (AR) and virtual reality (VR) experiences. Developers write in React Native, and Viro runs their code natively across all mobile VR (including Google Daydream, Samsung Gear VR, and Google Cardboard for iOS and Android) and AR (iOS ARKit and Android ARCore) platforms. [More info here](http://docs.viromedia.com/).
+  <p align="center">
+    The best AR/VR library for React Native!
+    <br />
+    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Installation instructions »</strong></a>
+    <br />
+    <br />
+    <a href="https://discord.gg/YfxDBGTxvG">Community Discord Server</a>
+    ·
+    <a href="https://github.com/ViroCommunity/starter-kit">Starter Kit Project</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+  </p>
+</p>
 
-This project contains the full source code for Viro React, and various sample Viro projects.
 
-The platform is free to use with no limits on distribution.
+## About ViroReact
+ViroReact is a platform for developers to rapidly build augmented reality (AR) and virtual reality (VR) experiences. Developers write in React Native, and Viro runs their code natively across all mobile VR (including Google Daydream, Samsung Gear VR, and Google Cardboard for iOS and Android) and AR (iOS ARKit and Android ARCore) platforms.
 
-To report bugs/issues with Viro platform, please file new issues on this repository.
+The project has gotten abandoned by the original authors, but a new group of maintainers got together on [Discord](https://discord.gg/YfxDBGTxvG) and ported ViroReact to the newest React Native version. So yes, ViroReact is again being actively developed.
 
-## Instructions for running sample projects using Testbed app:
+The platform is free to use with no limits on distribution. It is licensed under the MIT license.
 
-1. Follow directions on our [Quick start guide](https://docs.viromedia.com/docs/quick-start) to setup dependencies for trying these sample projects with the Viro Media App.
-2. Clone the repo into your workspace with git: `git clone https://github.com/viromedia/viro.git`.
-3. Go into the code-samples directory.
-4. Run `npm install` from the root of this project.
-5. Run `npm start` from the root of this project.
-6. Open the Viro Media App, slide out the left panel and select "Enter Testbed".
-7. Type the entire ngrok URL output (xxxxxx.ngrok.io) at the top of the terminal into the text field and hit 'GO'
-8. You should now be in the application! Enjoy!
 
-To rebuild the testbed app from source, please refere to the testbed repo [here](https://github.com/viromedia/viro-media-app/tree/master).
+## Installation instructions
+The best way to create a new React Native project with ViroReact is to start from the [Starter Kit](https://github.com/ViroCommunity/starter-kit). The steps below are for manually installing and linking the library to an existing React Native project.
 
-## Instructions for running sample code as a stand alone project (with no Testbed app):
-Tried the samples through our Testbed app and now want to try deploying sample code to your device as standalone apps? These quick steps below should get you started:
-1. Follow steps 1 - 4 from above (instructions for using with Testbed app)
-2. For Android, make sure you have downloaded and installed Android Studio from [here](https://developer.android.com/studio/install) to get required SDK and platform-tools for building android apps
-    Make sure you have the required environment variables set - `$ANDROID_HOME`, and added `platform-tools` to `$PATH` variable. If not,
-    ```
-    export ANDROID_HOME=/YOUR_PATH_TO/Android/sdk
-    export PATH=$ANDROID_HOME/platform-tools:$PATH
-    export PATH=$ANDROID_HOME/tools:$PATH
-    ```
-    Build and launch android app by executing the following from the root of the project
-    ```
-    react-native run-android --variant=gvrDebug
-    ```
-3. For iOS, in Xcode open `ViroSample.xcworkspace` in `ios/` directory.
-    Select the right "Team" for `ViroSample` and `ViroSampleTest` target under `General -> Signing`
-    Hit play to build and launch the app on your iOS device
+1. Install the latest stable `@viro-community/react-viro` package with the `react-viro` alias:
+   ```console
+   $ npm install --save react-viro@npm:@viro-community/react-viro
+   ```
 
-### Changing Between Samples
+Now it's needed to manually link the library to the iOS and Android projects. If you're unsure about which file to edit or where to put specified lines, click the link and it opens the correct part of code in our [starter-kit](https://github.com/ViroCommunity/starter-kit) repo.
 
-1. Open App.js in a text editor.
-2. For AR, set showARScene=true at line 44.
-3. For VR, Modify line 61: `scene: scenes['360 Photo Tour'],` to a scene defined in the `scenes` dictionary on line 30.
-3. Reload/restart the application.
+### iOS linking
+In the directory [`ios/`](https://github.com/ViroCommunity/starter-kit/tree/master/ios):
 
-## Instructions for using a CI-built Viro React platform from Mainline:
+1. Add the following lines to your [`Podfile`](https://github.com/ViroCommunity/starter-kit/blob/master/ios/Podfile) below `use_react_native!(:path => config["reactNativePath"])`:
+   ```yaml
+   pod 'ViroReact', :path => '../node_modules/react-viro/ios/'
+   pod 'ViroKit_static_lib', :path => '../node_modules/react-viro/ios/dist/ViroRenderer/static_lib'
+   ```
+
+2. Run
+   ```console
+   $ pod install
+   ```
+
+3. You're done! You can now run `npx react-native start` in one terminal window and `npx react-native run-android` in another to upload the app to your phone.
+
+### Android linking
+In the directory [`android/`](https://github.com/ViroCommunity/starter-kit/tree/master/android):
+
+1. [`build.gradle`](https://github.com/ViroCommunity/starter-kit/blob/master/android/build.gradle): Bump the minimum SDK version to level 24 and the gradle plugin to the latest:
+   ```groovy
+   buildscript{
+     ext{
+       ...
+       minSdkVersion = 24
+       ...
+     }
+     ...
+     dependencies{
+       classpath('com.android.tools.build:gradle:4.1.1')
+     }
+   }
+   ```
+
+2. [`app/build.gradle`](https://github.com/ViroCommunity/starter-kit/blob/master/android/app/build.gradle): Add the following lines to the dependencies section below `implementation "com.facebook.react:react-native:+" // From node_modules`:
+   ```groovy
+   implementation project(':gvr_common')
+   implementation project(':arcore_client')
+   implementation project(path: ':react_viro')
+   implementation project(path: ':viro_renderer')
+   implementation 'com.google.android.exoplayer:exoplayer:2.7.1'
+   implementation 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7'
+   ```
+
+3. [`settings.gradle`](https://github.com/ViroCommunity/starter-kit/blob/master/android/settings.gradle): Add the following lines to the end:
+   ```groovy
+   include ':react_viro', ':arcore_client', ':gvr_common', ':viro_renderer'
+   project(':arcore_client').projectDir = new File('../node_modules/react-viro/android/arcore_client')
+   project(':gvr_common').projectDir = new File('../node_modules/react-viro/android/gvr_common')
+   project(':viro_renderer').projectDir = new File('../node_modules/react-viro/android/viro_renderer')
+   project(':react_viro').projectDir = new File('../node_modules/react-viro/android/react_viro')
+   ```
+
+4. [`gradle/wrapper/gradle-wrapper.properties`](https://github.com/ViroCommunity/starter-kit/blob/master/android/gradle/wrapper/gradle-wrapper.properties): set the `distributionUrl` to the latest version:
+   ```groovy
+   distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-bin.zip
+   ```
+
+5. [`app/src/main/java/com/YOUR_APP/MainApplication.java`](https://github.com/ViroCommunity/starter-kit/blob/master/android/app/src/main/java/com/myviroapp/MainApplication.java):
+    1. Add the following line to the end of the import list:
+       ```java
+       import com.viromedia.bridge.ReactViroPackage;
+       ```
+    2. Add the following line below `List<ReactPackage> packages = new PackageList(this).getPackages();`:
+       ```java
+       packages.add(new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf("AR")));
+       ```
+       You can replace the string `AR` with one of the following depending on your needs: `GVR`, `OVR_MOBILE`, `AR`.
+
+6. [`app/src/main/AndroidManifest.xml`](https://github.com/ViroCommunity/starter-kit/blob/master/android/app/src/main/AndroidManifest.xml): These steps are for AR, steps for VR are in the [old documentation](https://docs.viromedia.com/docs/integrating-existing-projects-android#updating-your-androidmanifestxml):
+    1. Add the following line as an argument to the `<application>` node. This is only used when debugging and is not recommended for production.
+      ```xml
+      android:usesCleartextTraffic="true"
+      ```
+    2. Add the camera permission to the `<manifest>` node below other permissions:
+         ```xml
+         <uses-permission android:name="android.permission.CAMERA" />
+         ```
+    3. Add the following line to the `<application>` node, this enables ARCore:
+         ```xml
+         <meta-data android:name="com.google.ar.core" android:value="optional" />
+         ```
+
+7. You're done! You can now run `npx react-native start` in one terminal window and `npx react-native run-android` in another to upload the app to your phone.
+
+
+### Troubleshooting
+Having troubles with the installation? Reach us on our [Discord server](https://discord.gg/YfxDBGTxvG)!
+
+
+
+---
+
+
+## Instructions for using a CI-built ViroReact platform from Mainline:
+> **Warning:** these instructions might be out-dated. They are kept here just as a reference.
+
 You can also try the latest mainline build containing bleeding edge features and fixes. Please keep in mind that mainline builds may not be as stable as release builds. To do so, simply:
 
-1. Go to the [Viro Actions Workflows](https://github.com/viromedia/viro/actions) for this project.
+1. Go to the [Viro Actions Workflows](https://github.com/ViroCommunity/viro/actions) for this project.
 2. You should see a list of "Viro Bridge CI Pipeline" workflows.
 3. Click on the latest successfully built workflow pipeline (should be a checkmark next to it).
 4. Download the latest built ViroReact.tgz artiface.
-4. Clone this repo into your workspace with git: `git clone https://github.com/viromedia/viro.git`.
+4. Clone this repo into your workspace with git: `git clone https://github.com/ViroCommunity/viro.git`.
 5. Go into the code-samples directory.
-6. Run `npm install` from the root of this project. 
+6. Run `npm install` from the root of this project.
 7. Remove the ViroReact framework that was pulled down from the npm install (you are going to use the pre-built one).
 8. npm install ../path/to/your/downloadedArtifact.tgz
 
-## Instructions for manually building the Viro React platform:
+## Instructions for manually building the ViroReact platform:
+> **Warning:** these instructions might be out-dated. They are kept here just as a reference.
 
-### Building iOS Viro React:
+### Building iOS ViroReact:
 
 1. Follow directions on our [Quick start guide](https://docs.viromedia.com/docs/quick-start) to setup dependencies.
-2. Clone the repo into your workspace with git: `git clone https://github.com/viromedia/viro.git`.
-3. Build our iOS renderer using build instructions outlined in our [Virocore](https://github.com/viromedia/virocore/blob/master/README.md) repo.
+2. Clone the repo into your workspace with git: `git clone https://github.com/ViroCommunity/viro.git`.
+3. Build our iOS renderer using build instructions outlined in our [Virocore](https://github.com/ViroCommunity/virocore/blob/master/README.md) repo.
 4. Verify you see new files created in `ios/dist` folder.
 5. Install pods in `ios/` folder:
    ```
@@ -90,16 +177,16 @@ You can also try the latest mainline build containing bleeding edge features and
 11. That's it! Now build React scheme for `Generic iOS Device`, followed by ViroReact scheme for the same target.
 Note:
     ```
-    11.a If you want the ability to run on Simulator, 
-         change target to any of the `iOS Simulator` targets instead of `Generic iOS Device`. 
-    11.b If in your own app project setup, you prefer to include Viro React as a static library 
-         rather than relying on `use_frameworks!` - build scheme `ViroReact_static_lib` 
-         instead of `ViroReact` as mentioned above in step #11. 
+    11.a If you want the ability to run on Simulator,
+         change target to any of the `iOS Simulator` targets instead of `Generic iOS Device`.
+    11.b If in your own app project setup, you prefer to include ViroReact as a static library
+         rather than relying on `use_frameworks!` - build scheme `ViroReact_static_lib`
+         instead of `ViroReact` as mentioned above in step #11.
     ```
 12. You should see a new file `libViroReact.a` at `ios/dist/lib/libViroReact.a`.
-13. To run Viro React tests, run `ViroExample` scheme on your plugged in iOS device.
+13. To run ViroReact tests, run `ViroExample` scheme on your plugged in iOS device.
 
-### Building Android Viro React:
+### Building Android ViroReact:
 1. Under the viro directory, run `./prepareRelease.sh`.
 2. Your android bridge should now be built under release.
 3. You should see a new file created at android/react_viro/react_viro-release.aar
@@ -123,13 +210,14 @@ Look at our [documentation](http://docs.viromedia.com/).
 Join our Slack group [here](https://join.slack.com/t/virodevelopers/shared_invite/enQtMzI3MzgwNDM2NDM5LTdhMjg5OTJkZGEwYmI0Yzg0N2JkMzJhODVmNmY4YmUyOGY4YjMyZmFmMGFhMTMyMzZiYzU0MGUxMGIzZDFiNjY).
 
 ## Sample Code
+> **Note:** these code samples might be out-dated. They are kept here just as a reference. Better code samples are coming soon!
 
-### [Figment AR (Complete Open Source App)](https://github.com/viromedia/figment-ar)
+### [Figment AR (Complete Open Source App)](https://github.com/ViroCommunity/figment-ar)
 A repository containing the entire source code, built using ViroReact and React Native, for Viro Media's award winning Figment AR App. Available on [Google Play](https://play.google.com/store/apps/details?id=com.viro.figment) and [App Store](https://itunes.apple.com/us/app/figment-ar/id1270018902?mt=8).
 
-<a href="https://github.com/viromedia/figment-ar"><img src="code-samples/screenshots/figment_1.png" width="200"/> <img src="code-samples/screenshots/figment_2.png" width="200"/> <img src="code-samples/screenshots/figment_3.png" width="200"/> <img src="code-samples/screenshots/figment_4.png" width="200"/></a>
+<a href="https://github.com/ViroCommunity/figment-ar"><img src="code-samples/screenshots/figment_1.png" width="200"/> <img src="code-samples/screenshots/figment_2.png" width="200"/> <img src="code-samples/screenshots/figment_3.png" width="200"/> <img src="code-samples/screenshots/figment_4.png" width="200"/></a>
 
-#### Download complete source at https://github.com/viromedia/figment-ar
+#### Download complete source at https://github.com/ViroCommunity/figment-ar
 
 ### Sample Code Overview
 
@@ -215,6 +303,7 @@ A complete React Native w/Viro AR Sample App. Demonstrates how to place, drag, a
 </a>
 
 ## Tutorials
+> **Warning:** these tutorials might be out-dated. They are kept here just as a reference. Better tutorials are coming soon!
 
 ### [How to build an interactive AR app in 5 minutes](https://blog.viromedia.com/how-to-build-an-interactive-ar-app-in-5-mins-w-react-native-viro-ar-e420147e1612)
 
@@ -233,4 +322,3 @@ A complete React Native w/Viro AR Sample App. Demonstrates how to place, drag, a
 <a href="https://blog.viromedia.com/add-snapchat-ar-lenses-to-any-app-w-react-native-viro-ar-9d4053769782">
 <img src="https://cdn-images-1.medium.com/max/1600/1*iTkW2kiLIwOwJ5e_HHxI6Q.gif" />
 </a>
-
