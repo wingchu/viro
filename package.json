@@ -15,10 +15,7 @@
   "jest": {
     "preset": "react-native"
   },
-  "peerDependencies": {
-    "react": "^16.13.1",
-    "react-native": "^0.63.2"
-  },
+  "peerDependencies": {},
   "files": [
     "components",
     "android/react_viro",
@@ -32,6 +29,8 @@
   ],
   "dependencies": {
     "create-react-class": "^15.7.0",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "react": "^16.13.1",
+    "react-native": "^0.63.2"
   }
 }
